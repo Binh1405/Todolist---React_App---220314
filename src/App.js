@@ -1,25 +1,67 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import Header from "./components/Header";
+import List from "./components/List";
+import NewTask from "./components/NewTask";
 
-function App() {
+const App = () => {
+  const [tasks, setTasks] = useState([
+    { id: "task_1", title: "Learn JS Fundamental", status: 1 },
+    { id: "task_2", title: "Code a Todo list", status: 1 },
+  ]);
+  const [showIncomplete, setShowIncomplete] = useState(false);
+  const [newTask, setNewTask] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (newTask) {
+      const task = {
+        id: Date.now(),
+        title: newTask,
+        status: 0,
+      };
+      setTasks([...tasks, task]);
+      setNewTask("");
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setNewTask(e.target.value);
+  };
+
+  const setTaskStatus = (taskId, status) => {
+    setTasks(
+      tasks.map((task) => {
+        if (task.id === taskId) {
+          return { ...task, status: status ? 1 : 0 };
+        }
+        console.log("task", task);
+        return task;
+      })
+    );
+  };
+
+  const removeTask = (taskId) => {
+    setTasks(tasks.filter((task) => task.id !== taskId));
+  };
+  console.log("tasks", tasks);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <Header title="Todo List" subtitle="Get this list" />
+      <List
+        tasks={tasks}
+        showIncomplete={showIncomplete}
+        setTaskStatus={setTaskStatus}
+        removeTask={removeTask}
+        setShowIncomplete={setShowIncomplete}
+      />
+      <NewTask
+        handleInputChange={handleInputChange}
+        handleSubmit={handleSubmit}
+        newTask={newTask}
+      />
     </div>
   );
-}
+};
 
 export default App;
