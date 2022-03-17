@@ -6,7 +6,7 @@ import NewTask from "./components/NewTask";
 
 const App = () => {
   const [tasks, setTasks] = useState([
-    { id: "task_1", title: "Learn JS Fundamental", status: 1 },
+    { id: "task_1", title: "Learn JS Fundamental", status: 0 },
     { id: "task_2", title: "Code a Todo list", status: 1 },
   ]);
   const [showIncomplete, setShowIncomplete] = useState(false);
